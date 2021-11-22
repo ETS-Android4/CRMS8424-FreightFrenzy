@@ -55,10 +55,10 @@ public class MecTeleOpMechanum extends OpMode {
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Initializing Intake
-        spinIntake = hardwareMap.dcMotor.get("spin");
-        spinIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        spinIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        spinIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //spinIntake = hardwareMap.dcMotor.get("spin");
+        //spinIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //spinIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //spinIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Initializing Carousel
         carousel = hardwareMap.dcMotor.get("c");
@@ -116,6 +116,7 @@ public class MecTeleOpMechanum extends OpMode {
         }
         carousel.setPower(0);
     }
+    /*
     public void SpinA(boolean tele) {
         if (!tele) {
             while ((Math.abs(carousel.getCurrentPosition()) < curTargetSpin)) {
@@ -140,7 +141,7 @@ public class MecTeleOpMechanum extends OpMode {
         }
         carousel.setPower(0);
     }
-
+    */
     @Override
     public void loop() {
         telemetry.addData("lift level: ", liftHeight);
@@ -169,17 +170,11 @@ public class MecTeleOpMechanum extends OpMode {
                 bl.setPower(BLP * 0.35);
                 fr.setPower(FRP * 0.175);
             }
-            else if(gamepad1.left_trigger > 0.1){
-                fl.setPower(FLP);
-                br.setPower(BRP);
-                fr.setPower(FRP);
-                bl.setPower(BLP);
-            }
             else {
-                fl.setPower(FLP*.5);
+                fl.setPower(FLP*.8);
                 br.setPower(BRP);
-                fr.setPower(FRP*.75);
-                bl.setPower(BLP);
+                fr.setPower(FRP*.6);
+                bl.setPower(BLP*.8);
             }
 
         }
@@ -189,6 +184,7 @@ public class MecTeleOpMechanum extends OpMode {
             fr.setPower(0);
             br.setPower(0);
         }
+        /*
         if(gamepad2.right_stick_y > 0.1){
             if(gamepad2.right_trigger > 0.1){
                 spinIntake.setPower(0.5);
@@ -205,7 +201,8 @@ public class MecTeleOpMechanum extends OpMode {
                 spinIntake.setPower(-1);
             }
         }
-        else if(gamepad2.right_stick_y < 0.1 && gamepad2.right_stick_y > -0.1){
+
+        if(gamepad2.right_stick_y < 0.1 && gamepad2.right_stick_y > -0.1){
             spinIntake.setPower(0);
         }
         if(gamepad2.left_stick_y > 0.1){
@@ -216,7 +213,9 @@ public class MecTeleOpMechanum extends OpMode {
                 carousel.setPower(1);
             }
         }
-        else if(gamepad2.left_stick_y < -0.1){
+
+         */
+        if(gamepad2.left_stick_y < -0.1){
             if(gamepad2.left_trigger > 0.1){
                 carousel.setPower(-0.5);
             }
@@ -237,6 +236,7 @@ public class MecTeleOpMechanum extends OpMode {
             SpinX(false);
         }
         */
+        /*
         if(gamepad2.b){
             SpinB(false);
             //telemetry.addLine("If color is true red, else blue");
@@ -261,9 +261,9 @@ public class MecTeleOpMechanum extends OpMode {
                 }
             }
             cSpinner.setPosition(carouselPosition);
-            */
-        }
 
+        }
+        */
 
         if(gamepad2.left_trigger > 0.1){
             if(liftHeight == 1){
