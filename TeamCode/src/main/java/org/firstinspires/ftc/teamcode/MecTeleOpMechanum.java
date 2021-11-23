@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="MecTeleOpMechanum", group = "TeleOp")
+
 public class MecTeleOpMechanum extends OpMode {
 
     //driving motors

@@ -4,11 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "TestAutoOmni", group = "Auto")
 public class TestAutoOmni extends LinearOpMode {
     DcMotor l;
     DcMotor r;
+    Servo pivot;
 
 
     @Override
@@ -27,5 +29,10 @@ public class TestAutoOmni extends LinearOpMode {
         wait(200);
         l.setPower(0);
         r.setPower(0);
+        pivot.setPosition(0);
+        wait(300);
+        pivot.setPosition(0.5);
+        wait(300);
+        pivot.setPosition(1);
     }
 }

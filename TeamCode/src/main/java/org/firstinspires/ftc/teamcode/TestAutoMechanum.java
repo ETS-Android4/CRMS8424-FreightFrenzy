@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "newTestAuto", group = "Auto")
 public class TestAutoMechanum extends MasterClassMechanum{
     @Override
     public void runOpMode() throws InterruptedException {
