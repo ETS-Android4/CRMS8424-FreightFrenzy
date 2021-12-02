@@ -10,6 +10,7 @@ public class TestTeleOP extends OpMode {
     DcMotor l;
     DcMotor r;
     Servo pivot;
+    DcMotor spin;
     @Override
     public void init() {
         l = hardwareMap.dcMotor.get("l");
@@ -21,7 +22,10 @@ public class TestTeleOP extends OpMode {
         l.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         r.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         pivot = hardwareMap.servo.get("p");
-        pivot.setPosition(0.5);
+        spin = hardwareMap.dcMotor.get("s");
+        spin.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        spin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        spin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
@@ -33,7 +37,7 @@ public class TestTeleOP extends OpMode {
                 r.setPower(turn);
                 l.setPower(turn);
             }
-            else if(gamepad1.right_trigger > .1 && Math.abs(gamepad1.left_stick_x)> 0.1){
+            else if(gamepad1.right_trigger > .1 && Math.abs(gamepad1.right_stick_x)> 0.1){
                 r.setPower(turn*.5);
                 l.setPower(turn*.5);
             }
@@ -52,13 +56,19 @@ public class TestTeleOP extends OpMode {
             l.setPower(0);
         }
         if(gamepad1.a){
-            pivot.setPosition(0.2);
+            pivot.setPosition(0);
         }
         if(gamepad1.b){
             pivot.setPosition(0.5);
         }
         if(gamepad1.x){
-            pivot.setPosition(.8);
+            pivot.setPosition(1);
+        }
+        if(Math.abs(gamepad1.right_stick_y) > 0.1){
+            spin.setPower(gamepad1.right_stick_y);
+        }
+        else{
+            spin.setPower(0);
         }
     }
 }
