@@ -4,18 +4,20 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "Test", group = "TeleOp")
-public class TestTeleOP extends OpMode {
+@TeleOp(group = "NewMecTeleOp")
+public class NewOmniMecTeleOp extends OpMode {
     DcMotor l;
     DcMotor r;
-    DcMotor pivot;
     DcMotor spin;
     DcMotor car1;
     DcMotor car2;
-    int ticks;
-    ElapsedTime elapsedTime = new ElapsedTime();
+    Servo pivot1;
+    Servo pivot2;
+    Double pick = 0.1;
+    Double low = 0.2;
+    Double mid = 0.3;
+    Double high = 0.4;
     @Override
     public void init() {
         l = hardwareMap.dcMotor.get("l");
@@ -30,10 +32,6 @@ public class TestTeleOP extends OpMode {
         spin.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         spin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         spin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        pivot = hardwareMap.dcMotor.get("p");
-        pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        pivot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         car1 = hardwareMap.dcMotor.get("c1");
         car1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         car1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -42,22 +40,14 @@ public class TestTeleOP extends OpMode {
         car2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         car2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         car2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        pivot1 = hardwareMap.servo.get("p1");
+        pivot2 = hardwareMap.servo.get("p2");
+        pivot1.setPosition(0.1);
+        pivot2.setPosition(0.1);
     }
-
-
 
     @Override
     public void loop() {
-        if(gamepad2.left_stick_y > 0.1) {
-            pivot.setTargetPosition(pivot.getCurrentPosition()+15);
-            pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            pivot.setPower(-1);
-        }
-        if(gamepad2.left_stick_y < -0.1){
-            pivot.setTargetPosition(pivot.getCurrentPosition()-15);
-            pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            pivot.setPower(1);
-        }
         if(Math.abs(gamepad1.left_stick_y) > 0.1 || Math.abs(gamepad1.right_stick_x) > 0.1){
             double drive = gamepad1.left_stick_y;
             double turn = gamepad1.right_stick_x;
@@ -89,7 +79,34 @@ public class TestTeleOP extends OpMode {
             r.setPower(0);
             l.setPower(0);
         }
-
+        if(gamepad2.left_stick_y > 0.1){
+            if(pivot1.getPosition() == pick){
+                pivot1.setPosition(low);
+                pivot2.setPosition(low);
+            }
+            else if(pivot1.getPosition() == low){
+                pivot1.setPosition(mid);
+                pivot2.setPosition(mid);
+            }
+            else {
+                pivot1.setPosition(high);
+                pivot2.setPosition(high);
+            }
+        }
+        if(gamepad2.left_stick_y < -0.1){
+            if(pivot1.getPosition() == high){
+                pivot1.setPosition(mid);
+                pivot2.setPosition(mid);
+            }
+            else if(pivot1.getPosition() == mid){
+                pivot1.setPosition(low);
+                pivot2.setPosition(low);
+            }
+            else {
+                pivot1.setPosition(pick);
+                pivot2.setPosition(pick);
+            }
+        }
         if(Math.abs(gamepad2.right_stick_y) > 0.1){
             spin.setPower(gamepad2.right_stick_y);
         }

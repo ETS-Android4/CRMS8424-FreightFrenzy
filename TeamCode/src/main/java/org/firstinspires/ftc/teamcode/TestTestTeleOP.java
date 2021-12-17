@@ -4,18 +4,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="MecTeleOp", group = "TeleOp")
-public class MecTeleOp extends OpMode {
+@TeleOp(group = "TeleOp", name = "TestForTest")
+public class TestTestTeleOP extends OpMode{
+    Servo pivot1;
+    Servo pivot2;
     DcMotor l;
     DcMotor r;
-    Servo pivot;
     DcMotor spin;
     DcMotor car1;
     DcMotor car2;
-    ElapsedTime pivotPos = new ElapsedTime();
-    public int lH = 1;
     @Override
     public void init() {
         l = hardwareMap.dcMotor.get("l");
@@ -26,20 +24,22 @@ public class MecTeleOp extends OpMode {
         r.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         l.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         r.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        pivot = hardwareMap.servo.get("p");
         spin = hardwareMap.dcMotor.get("s");
         spin.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         spin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         spin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         car1 = hardwareMap.dcMotor.get("c1");
-        car2 = hardwareMap.dcMotor.get("c2");
         car1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        car2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         car1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        car2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         car1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        car2 = hardwareMap.dcMotor.get("c2");
+        car2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        car2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         car2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        pivot1 = hardwareMap.servo.get("p1");
+        pivot1.setPosition(0.5);
+        pivot2 = hardwareMap.servo.get("p2");
+        pivot1.setPosition(0.5);
     }
 
     @Override
@@ -49,25 +49,25 @@ public class MecTeleOp extends OpMode {
             double turn = gamepad1.right_stick_x;
             double turnDrive = gamepad1.left_stick_y;
             if(Math.abs(gamepad1.right_stick_x)>0.1){
-                r.setPower(turn);
-                l.setPower(turn);
+                r.setPower(-turn*.5);
+                l.setPower(-turn*.5);
             }
             else if(Math.abs(gamepad1.right_stick_y) > 0.1){
-                r.setPower(turnDrive);
-                l.setPower(-turnDrive);
+                r.setPower(turnDrive*.5);
+                l.setPower(-turnDrive*.5);
             }
             else if(gamepad1.right_trigger > .1 && Math.abs(gamepad1.right_stick_x)> 0.1){
-                r.setPower(turn*.5);
-                l.setPower(turn*.5);
+                r.setPower(-turn*.25);
+                l.setPower(-turn*.25);
             }
 
             else if(gamepad1.right_trigger > .1 && Math.abs(gamepad1.left_stick_y)> 0.1){
-                r.setPower(drive*.25);
-                l.setPower(-drive*.25);
+                r.setPower(drive*.375);
+                l.setPower(-drive*.375);
             }
             else{
-                r.setPower(drive*.5);
-                l.setPower(-drive*.5);
+                r.setPower(drive*.75);
+                l.setPower(-drive*.75);
             }
 
         }
@@ -75,12 +75,44 @@ public class MecTeleOp extends OpMode {
             r.setPower(0);
             l.setPower(0);
         }
-        if(Math.abs(gamepad2.left_stick_y) > 0.1){
-            spin.setPower(gamepad2.left_stick_y);
+        if(Math.abs(gamepad2.right_stick_y) > 0.1){
+            spin.setPower(gamepad2.right_stick_y);
         }
         else{
             spin.setPower(0);
         }
 
+        if(gamepad2.left_trigger > 0.1){
+            car1.setPower(1);
+            car2.setPower(1);
+        }
+        else{
+            car1.setPower(0);
+            car2.setPower(0);
+        }
+        if(gamepad2.right_trigger > 0.1){
+            car1.setPower(-1);
+            car2.setPower(-1);
+        }
+        else{
+            car1.setPower(0);
+            car2.setPower(0);
+        }
+        if(gamepad2.left_stick_y > 0.1){
+            double pivotPos = pivot1.getPosition();
+            double pivotPos1 = pivot2.getPosition();
+            if(pivotPos < 1) {
+                pivot1.setPosition(pivotPos - 0.001);
+                pivot2.setPosition(pivotPos1 - 0.001);
+            }
+        }
+        else if(gamepad2.left_stick_y < -0.1){
+            double pivotPos = pivot1.getPosition();
+            double pivotPos1 = pivot2.getPosition();
+            if(pivotPos > 0) {
+                pivot1.setPosition(pivotPos + 0.001);
+                pivot2.setPosition(pivotPos1 + 0.001);
+            }
+        }
     }
 }
