@@ -3,9 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@Autonomous(group = "Auto", name = "ParkAuto")
-public class ParkAuto extends LinearOpMode {
+@Autonomous(group = "Auto", name = "ParkAutoRed1")
+public class ParkAutoRed1 extends LinearOpMode {
     DcMotor l;
     DcMotor r;
     @Override
@@ -18,10 +19,11 @@ public class ParkAuto extends LinearOpMode {
         r.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         l.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         r.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        l.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
-        while(l.getCurrentPosition() < 200){
-            l.setPower(1);
-            r.setPower(1);
+        while(Math.abs(l.getCurrentPosition()) < 2000){
+            l.setPower(.4);
+            r.setPower(.3);
         }
         l.setPower(0);
         r.setPower(0);

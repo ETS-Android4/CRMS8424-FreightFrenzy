@@ -45,6 +45,58 @@ public class NewOmniMecTeleOp extends OpMode {
         pivot1.setPosition(0.1);
         pivot2.setPosition(0.1);
     }
+    public void pivotUp(){
+        if(pivot1.getPosition() == pick){
+            pivot1.setPosition(low);
+            pivot2.setPosition(low);
+        }
+        else if(pivot1.getPosition() == low){
+            pivot1.setPosition(mid);
+            pivot2.setPosition(mid);
+        }
+        else {
+            pivot1.setPosition(high);
+            pivot2.setPosition(high);
+        }
+    }
+    public void stopPivot(){
+        pivot1.setPosition(pivot1.getPosition());
+        pivot2.setPosition(pivot2.getPosition());
+    }
+    public void pivotDown(){
+        if(pivot1.getPosition() == high){
+            pivot1.setPosition(mid);
+            pivot2.setPosition(mid);
+        }
+        else if(pivot1.getPosition() == mid){
+            pivot1.setPosition(low);
+            pivot2.setPosition(low);
+        }
+        else {
+            pivot1.setPosition(pick);
+            pivot2.setPosition(pick);
+        }
+    }
+    public void spinIntake(double power){
+        spin.setPower(power);
+    }
+    public void stopIntake(){
+        spin.setPower(0);
+    }
+    public void carousel(boolean color){
+        if(color){
+            car1.setPower(1);
+            car2.setPower(1);
+        }
+        else {
+            car1.setPower(-1);
+            car2.setPower(-1);
+        }
+    }
+    public void stopCarousel(){
+        car1.setPower(0);
+        car2.setPower(0);
+    }
 
     @Override
     public void loop() {
@@ -66,12 +118,12 @@ public class NewOmniMecTeleOp extends OpMode {
             }
 
             else if(gamepad1.right_trigger > .1 && Math.abs(gamepad1.left_stick_y)> 0.1){
-                r.setPower(drive*.375);
-                l.setPower(-drive*.375);
+                r.setPower(-drive*.375);
+                l.setPower(drive*.375);
             }
             else{
-                r.setPower(drive*.75);
-                l.setPower(-drive*.75);
+                r.setPower(-drive*.75);
+                l.setPower(drive*.75);
             }
 
         }
@@ -92,6 +144,12 @@ public class NewOmniMecTeleOp extends OpMode {
                 pivot1.setPosition(high);
                 pivot2.setPosition(high);
             }
+            //pivotUp();
+        }
+        else{
+            pivot1.setPosition(pivot1.getPosition());
+            pivot2.setPosition(pivot2.getPosition());
+            //stopPivot();
         }
         if(gamepad2.left_stick_y < -0.1){
             if(pivot1.getPosition() == high){
@@ -106,29 +164,41 @@ public class NewOmniMecTeleOp extends OpMode {
                 pivot1.setPosition(pick);
                 pivot2.setPosition(pick);
             }
+            //pivotDown();
+        }
+        else{
+            pivot1.setPosition(pivot1.getPosition());
+            pivot2.setPosition(pivot2.getPosition());
+            //stopPivot();
         }
         if(Math.abs(gamepad2.right_stick_y) > 0.1){
             spin.setPower(gamepad2.right_stick_y);
+            //spinIntake(gamepad2.right_stick_y);
         }
         else{
             spin.setPower(0);
+            //stopIntake();
         }
 
         if(gamepad2.left_trigger > 0.1){
             car1.setPower(1);
             car2.setPower(1);
+            //carousel(true);
         }
         else{
             car1.setPower(0);
             car2.setPower(0);
+            //stopCarousel();
         }
         if(gamepad2.right_trigger > 0.1){
             car1.setPower(-1);
             car2.setPower(-1);
+            //carousel(false);
         }
         else{
             car1.setPower(0);
             car2.setPower(0);
+            //stopCarousel();
         }
     }
 }
